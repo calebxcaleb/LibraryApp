@@ -1,0 +1,98 @@
+<div class="text-center col-sm-offset-4 col-sm-4 col-xs-12">
+    <h3><b><%= @book.title %></b></h3><br>
+  <div style="text-align:left; text-indent: 14em">
+    <h4><b>Author:</b> <%= @book.author %></h4>
+    <h4><b>Genre:</b> <%= @book.genre %></h4>
+    <h4><b>SubGenre:</b> <%= @book.subgenre %></h4>
+  </div>
+  <br>
+
+  <% if @book.copies == 0 %>
+    <h4>No copies available</h4>
+  <% else %>
+    <h4><%= @book.copies %> copies available</h4>
+  <% end %>
+  <br>
+
+  <% if !user_signed_in? %>
+    <h3 class="text-center">Borrow this Book</h3>
+    <%= link_to "Login to borrow", new_user_session_path, class: "btn btn-primary btn-lg" %>
+  <% elsif @book.copies == 0 %>
+    <h4 style="color:red"> No copies available for borrowing </h4>
+  <% elsif !BorrowLog.find_by(book_id: @book.id.to_i, user_id: current_user.id.to_i, return_time: nil).nil? %>
+    <h4 style="color:red"> You currently are borrowing this book </h4>
+  <% else %>
+    <h3 class="text-center">Borrow this Book</h3>
+    <%= link_to "Borrow", check_params_path(book_id: Integer(@book.id), user_id: Integer(current_user.id), borrow_time: DateTime.now, return_time: nil), method: :check_params, class: "btn btn-primary btn-lg" %>
+  <% end %>
+  <br><br>
+
+  <% if user_signed_in? && current_user.is_admin? %>
+    <h3 class="text-center">Edit this Book</h3>
+    <h3><%= link_to "Edit Book", edit_book_path(@book), class: "text-center btn btn-primary btn-lg" %></h3>
+    <br><br>
+
+    <h3 class="text-center">Delete this Book</h3>
+    <h3><%= link_to "Delete Book", book_path(@book), data: {:confirm => 'Are you sure?'}, :method => 'delete', class: "text-center btn btn-primary btn-lg" %></h3>
+    <br><br>
+  <% end %>
+
+  <h3> Borrow Log </h3>
+
+  <% if user_signed_in? %>
+    <h4 class="text-left"> Your Log </h4>
+
+    <table class="table">
+      <thead style="background-color:gray">
+        <tr>
+          <th>Borrow Time</th>
+          <th>Return Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% BorrowLog.all.each do |borrow_log| %>
+          <% if borrow_log.user_id.to_i != 0 && Book.find(borrow_log.book_id.to_i).title == @book.title && User.find(borrow_log.user_id.to_i) == current_user %>
+            <tr>
+              <td><%= borrow_log.borrow_time.strftime("%Y, %m %d") %></td>
+              <% if borrow_log.return_time.nil? %>
+                <td><%= link_to "Return", return_book_path(borrow_log_id: borrow_log.id, book_id: @book.id, return_time: DateTime.now), method: :return_book, class: "btn btn-primary" %></td>
+              <% else %>
+                <td><%= borrow_log.return_time.strftime("%Y, %m %d") %></td>
+              <% end %>
+            </tr>
+            <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+
+  <h4 class="text-left"> Whole Log </h4>
+
+  <table class="table">
+    <thead style="background-color:gray">
+      <tr>
+        <th>User</th>
+        <th>Borrow Time</th>
+        <th>Return Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% BorrowLog.all.each do |borrow_log| %>
+        <% if borrow_log.user_id.to_i != 0 && Book.find(borrow_log.book_id.to_i).title == @book.title && User.find(borrow_log.user_id.to_i) != current_user %>
+          <tr>
+            <td><%= User.find(borrow_log.user_id.to_i).email %></td>
+            <td><%= borrow_log.borrow_time.strftime("%Y, %m %d") %></td>
+            <% if borrow_log.return_time.nil? %>
+              <td> Not returned yet </td>
+            <% else %>
+              <td><%= borrow_log.return_time %></td>
+            <% end %>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= link_to "GO BACK", root_url, class: "btn btn-secondary btn-lg" %>
+
+</div>

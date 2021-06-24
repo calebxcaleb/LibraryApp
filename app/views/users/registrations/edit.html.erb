@@ -1,0 +1,102 @@
+<div class="col-sm-offset-4 col-sm-4 col-xs-12">
+  <h1 class="text-center"><b> Welcome <%= current_user.email.split("@").first %>! </b></h1><br>
+  <h2 class="text-center">Edit <%= resource_name.to_s.humanize %></h2>
+
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "form" }) do |f| %>
+    <%= devise_error_messages! %>
+
+    <div class="form-group">
+      <%= f.label :email %><br />
+      <%= f.email_field :email, autofocus: true, class: "form-control" %>
+    </div>
+
+    <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+      <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+    <% end %>
+
+    <div class="form-group">
+      <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
+      <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :password_confirmation %><br />
+      <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
+      <%= f.password_field :current_password, autocomplete: "off", class: "form-control" %>
+    </div>
+
+    <%= f.submit "Update", class: "btn btn-primary btn-lg" %>
+  <% end %>
+
+  <h3 class="text-center">Cancel my account</h3>
+
+  <div class="text-center">
+    <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: "btn btn-danger btn-lg" %>
+  </div>
+  <br><br>
+
+  <% if current_user.is_admin? %>
+    <div class="text-center">
+      <h3>Add Books</h3>
+      <%= link_to "Add Books", new_book_path, class: "btn btn-primary btn-lg" %>
+    </div>
+    <br><br>
+  <% end %>
+
+  <h3 class="text-center">Borrow Log</h3>
+
+  <h4>Pending</h4>
+
+  <table class="table">
+    <thead style="background-color:gray">
+      <tr>
+        <th>Book</th>
+        <th>Borrow Time</th>
+        <th>Return By</th>
+        <th>Return</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% BorrowLog.all.each do |borrow_log| %>
+        <% if borrow_log.user_id.to_i != 0 && User.find(borrow_log.user_id.to_i) == current_user && borrow_log.return_time.nil? %>
+          <tr>
+            <td><%= link_to Book.find(borrow_log.book_id.to_i).title, book_path(Book.find(borrow_log.book_id.to_i)) %></td>
+            <td><%= borrow_log.borrow_time.strftime("%Y, %m %d") %></td>
+            <td><%= (borrow_log.borrow_time + 1.weeks).strftime("%Y, %m %d") %></td>
+            <td><%= link_to "Return", return_book_path(borrow_log_id: borrow_log.id, book_id: borrow_log.id, return_time: DateTime.now), method: :return_book, class: "btn btn-primary" %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+
+  <h4>Returned</h4>
+
+  <table class="table">
+    <thead style="background-color:gray">
+      <tr>
+        <th>Book</th>
+        <th>Borrow Time</th>
+        <th>Return Time</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% BorrowLog.all.each do |borrow_log| %>
+        <% if borrow_log.user_id.to_i != 0 && User.find(borrow_log.user_id.to_i) == current_user && !borrow_log.return_time.nil? %>
+          <tr>
+            <td><%= link_to Book.find(borrow_log.book_id.to_i).title, book_path(Book.find(borrow_log.book_id.to_i)) %></td>
+            <td><%= borrow_log.borrow_time.strftime("%Y, %m %d") %></td>
+            <td><%= borrow_log.return_time.strftime("%Y, %m %d") %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+
+</div>

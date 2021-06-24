@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="text-center col-sm-10 col-sm-offset-1 col-xs-12 blog-content">
+    <h1>Welcome to the Library!</h1>
+    <br>
+
+    <%= search_form_for @q do |f| %>
+      <%= f.label  "Search Title" %>
+      <%= f.search_field :title_cont %>
+      <%= f.submit %>
+    <% end %>
+    <br>
+
+    <% @books.each do |book| %>
+      <div class="col-xs-12">
+        <h3><%= book.title %></h3>
+        <h4><%= book.author %></h4>
+
+        <% if book.copies <= 0 %>
+          <h4 style="color:red">Currently unavailable</h4>
+        <% else %>
+          <h4>Available for checkout</h4>
+        <% end %>
+
+        <%= link_to "CHECK OUT BOOK", book_path(book), class: "btn btn-primary" %>
+        <br><br>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h4> <%= @book.title %> </h4>
+
+<%#= check_params(book_id: Integer(@book.id), user_id: Integer(current_user.id), borrow_time: DateTime.now, return_time: nil) %>
+
+<h1>Listing Borrow Logs</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @borrow_logs.each do |borrow_log| %>
+      <tr>
+        <td><%= link_to 'Show', borrow_log %></td>
+        <td><%= link_to 'Edit', edit_borrow_log_path(borrow_log) %></td>
+        <td><%= link_to 'Destroy', borrow_log, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Borrow log', new_borrow_log_path %>
