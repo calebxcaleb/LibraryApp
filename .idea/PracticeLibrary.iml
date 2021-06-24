@@ -198,7 +198,6 @@
     <orderEntry type="library" scope="PROVIDED" name="spring (v2.0.2, RVM: ruby-2.3.5) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="sprockets (v3.7.2, RVM: ruby-2.3.5) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="sprockets-rails (v3.2.2, RVM: ruby-2.3.5) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="sqlite3 (v1.3.13, RVM: ruby-2.3.5) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="ssrf_filter (v1.0.7, RVM: ruby-2.3.5) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="stackprof (v0.2.17, RVM: ruby-2.3.5) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="terrapin (v0.6.0, RVM: ruby-2.3.5) [gem]" level="application" />

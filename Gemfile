@@ -31,7 +31,7 @@ gem 'prawn'
 gem 'pdfkit'
 gem 'simple_form', '~> 3.2'
 gem 'bootstrap-sass', '~> 3.3'
-gem "sqlite3", "~> 1.3.0"
+# gem "sqlite3", "~> 1.3.0"
 gem 'ckeditor', '~> 4.1'
 gem 'devise'
 gem 'combine_pdf', '>= 1.0.7'

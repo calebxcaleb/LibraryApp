@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20210622172042) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "books", force: :cascade do |t|
     t.string   "title"
     t.string   "author"
@@ -26,7 +29,7 @@ ActiveRecord::Schema.define(version: 20210622172042) do
     t.integer  "borrow_log_id"
   end
 
-  add_index "books", ["borrow_log_id"], name: "index_books_on_borrow_log_id"
+  add_index "books", ["borrow_log_id"], name: "index_books_on_borrow_log_id", using: :btree
 
   create_table "borrow_logs", force: :cascade do |t|
     t.datetime "borrow_time"
@@ -37,8 +40,8 @@ ActiveRecord::Schema.define(version: 20210622172042) do
     t.integer  "book_id"
   end
 
-  add_index "borrow_logs", ["book_id"], name: "index_borrow_logs_on_book_id"
-  add_index "borrow_logs", ["user_id"], name: "index_borrow_logs_on_user_id"
+  add_index "borrow_logs", ["book_id"], name: "index_borrow_logs_on_book_id", using: :btree
+  add_index "borrow_logs", ["user_id"], name: "index_borrow_logs_on_user_id", using: :btree
 
   create_table "ckeditor_assets", force: :cascade do |t|
     t.string   "data_file_name",               null: false
@@ -51,7 +54,7 @@ ActiveRecord::Schema.define(version: 20210622172042) do
     t.datetime "updated_at",                   null: false
   end
 
-  add_index "ckeditor_assets", ["type"], name: "index_ckeditor_assets_on_type"
+  add_index "ckeditor_assets", ["type"], name: "index_ckeditor_assets_on_type", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -65,8 +68,8 @@ ActiveRecord::Schema.define(version: 20210622172042) do
     t.boolean  "is_admin",               default: false
   end
 
-  add_index "users", ["borrow_log_id"], name: "index_users_on_borrow_log_id"
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["borrow_log_id"], name: "index_users_on_borrow_log_id", using: :btree
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end
