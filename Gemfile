@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.7.2'
+ruby '2.3.5'
 gem 'rails', '4.2.5.2'
 gem 'pg', '0.19.0'
 gem 'sass-rails', '~> 5.0'
@@ -31,7 +31,7 @@ gem 'prawn'
 gem 'pdfkit'
 gem 'simple_form', '~> 3.2'
 gem 'bootstrap-sass', '~> 3.3'
-# gem "sqlite3", "~> 1.3.0"
+gem "sqlite3", "~> 1.3.0"
 gem 'ckeditor', '~> 4.1'
 gem 'devise'
 gem 'combine_pdf', '>= 1.0.7'
