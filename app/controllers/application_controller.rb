@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  # Stores the previous location of the user
   def store_location
     if(request.path != "/users/sign_in" &&
       request.path != "/users/sign_up" &&
@@ -15,6 +16,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # configure new path after user is signed in
   def after_sign_in_path_for(resource)
     previous_path = session[:previous_url]
     session[:previous_url] = nil

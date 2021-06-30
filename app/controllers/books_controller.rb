@@ -31,15 +31,7 @@ class BooksController < ApplicationController
     end
   end
 
-  def load
-    books = []
-    filename = 'Library App Dev test books - PART 1.csv'
-    CSV.foreach(filename, headers: true) do |row|
-      books << row.to_hash
-    end
-    Book.import(items)
-  end
-
+  # check if current user is an admin for admin only paths
   def check_admin
     redirect_to root_path unless current_user.is_admin?
   end

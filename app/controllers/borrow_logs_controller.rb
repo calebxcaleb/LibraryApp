@@ -63,6 +63,7 @@ class BorrowLogsController < ApplicationController
     end
   end
 
+  # creates a new borrow log (was supposed to check parameters but there was no need for it)
   def check_params
     redirect_to :back
     BorrowLog.create(borrow_log_params)
@@ -70,6 +71,7 @@ class BorrowLogsController < ApplicationController
     @book.update_attribute(:copies, @book.copies - 1)
   end
 
+  # adds the return time value to borrow log to mark it as returned
   def return_book
     redirect_to :back
     @borrow_log = BorrowLog.find(borrow_log_params[:borrow_log_id])
